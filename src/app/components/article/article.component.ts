@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Platform } from '@ionic/angular';
+import { ActionSheetController, Platform } from '@ionic/angular';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 
 import { Article } from '../../interfaces/index';
@@ -13,7 +13,11 @@ export class ArticleComponent {
   @Input() article: Article;
   @Input() index: number;
 
-  constructor(private platform: Platform, private iab: InAppBrowser) {}
+  constructor(
+    private platform: Platform,
+    private iab: InAppBrowser,
+    private actionSheetCtrl: ActionSheetController
+  ) {}
 
   openArticle() {
     if (this.platform.is('ios') || this.platform.is('android')) {
@@ -23,5 +27,38 @@ export class ArticleComponent {
     }
 
     window.open(this.article.url, '_blank');
+  }
+
+  async articleOptions() {
+    const actionSheet = await this.actionSheetCtrl.create({
+      header: 'Opciones',
+      buttons: [
+        {
+          text: 'Compartir',
+          icon: 'share-outline',
+          handler: () => this.onShareArticle(),
+        },
+        {
+          text: 'Favorito',
+          icon: 'heart-outline',
+          handler: () => this.onToggleFavorite(),
+        },
+        {
+          text: 'Cancelar',
+          icon: 'close-outline',
+          role: 'cancel',
+        },
+      ],
+    });
+
+    await actionSheet.present();
+  }
+
+  onShareArticle() {
+    console.log('share article');
+  }
+
+  onToggleFavorite() {
+    console.log('toggle favorite');
   }
 }
