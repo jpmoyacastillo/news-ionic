@@ -47,4 +47,12 @@ export class StorageService {
       console.log(this._localArticles);
     } catch (error) {}
   }
+
+  articleInFavorites(article: Article) {
+    // ! o !! sirven para transformar a valor booleano.
+    // ! sería la negación en este caso false y !! para retornar un true en caso de encontrar
+    return !!this._localArticles.find(
+      (localArticle) => localArticle.title === article.title
+    );
+  }
 }

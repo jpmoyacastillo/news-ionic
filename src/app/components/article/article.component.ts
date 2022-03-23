@@ -40,10 +40,14 @@ export class ArticleComponent {
   }
 
   async articleOptions() {
+    const articleInFavorite = await this.storageService.articleInFavorites(
+      this.article
+    );
+
     const normalBtns: ActionSheetButton[] = [
       {
-        text: 'Favorito',
-        icon: 'heart-outline',
+        text: articleInFavorite ? 'Remover favorito' : 'Favorito',
+        icon: articleInFavorite ? 'heart' : 'heart-outline',
         handler: () => this.onToggleFavorite(),
       },
       {
