@@ -28,7 +28,7 @@ export class Tab2Page implements OnInit {
   constructor(private newsService: NewsService) {}
 
   ngOnInit() {
-    console.log(this.infiniteScroll);
+    // console.log(this.infiniteScroll);
     this.newsService
       .getTopHeadlinesByCategory(this.selectedCategory)
       .subscribe((articles) => {
