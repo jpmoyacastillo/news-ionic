@@ -78,9 +78,24 @@ export class ArticleComponent {
   }
 
   onShareArticle() {
-    const { title, source, url } = this.article;
+    if (this.platform.is('cordova')) {
+      const { title, source, url } = this.article;
 
-    this.socialSharing.share(title, source.name, null, url);
+      this.socialSharing.share(title, source.name, null, url);
+    } else {
+      if (navigator.share) {
+        navigator
+          .share({
+            title: this.article.title,
+            text: this.article.description,
+            url: this.article.url,
+          })
+          .then(() => console.log('Successful share'))
+          .catch((error) => console.log('Error sharing', error));
+      } else {
+        console.log('No se pudo compartir porque no se soporta');
+      }
+    }
   }
 
   onToggleFavorite() {
